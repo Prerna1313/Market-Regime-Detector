@@ -834,6 +834,7 @@ def render_dataset_overview_page() -> None:
             st.plotly_chart(
                 build_pca_scatter_figure(pca_source, pca_feature_columns),
                 use_container_width=True,
+                key="dataset_overview_pca_scatter",
             )
             render_chart_frame_end()
             st.caption(
@@ -922,6 +923,7 @@ def render_pipeline_eda(engineered_dataframe: pd.DataFrame) -> None:
                     st.plotly_chart(
                         build_correlation_figure(engineered_dataframe, corr_columns),
                         use_container_width=True,
+                        key="pipeline_eda_correlation",
                     )
                     render_chart_frame_end()
 
@@ -936,6 +938,7 @@ def render_pipeline_eda(engineered_dataframe: pd.DataFrame) -> None:
             st.plotly_chart(
                 build_distribution_figure(engineered_dataframe, distribution_column),
                 use_container_width=True,
+                key="pipeline_eda_distribution",
             )
             render_chart_frame_end()
 
@@ -959,6 +962,7 @@ def render_pipeline_eda(engineered_dataframe: pd.DataFrame) -> None:
                 st.plotly_chart(
                     build_categorical_bar_figure(engineered_dataframe, categorical_column, top_n),
                     use_container_width=True,
+                    key="pipeline_eda_categorical_bar",
                 )
                 render_chart_frame_end()
             with table_column:
@@ -1228,7 +1232,11 @@ def render_pipeline_validation(engineered_dataframe: pd.DataFrame) -> None:
         left_column, right_column = st.columns([1.3, 1.0], gap="large")
         with left_column:
             render_chart_frame_start()
-            st.plotly_chart(build_validation_figure(validation_summary), use_container_width=True)
+            st.plotly_chart(
+                build_validation_figure(validation_summary),
+                use_container_width=True,
+                key="pipeline_validation_figure",
+            )
             render_chart_frame_end()
         with right_column:
             render_subpanel_start()
@@ -1264,7 +1272,11 @@ def render_pipeline_hyperparameter_tuning(engineered_dataframe: pd.DataFrame) ->
         chart_column, table_column = st.columns([1.35, 0.95], gap="large")
         with chart_column:
             render_chart_frame_start()
-            st.plotly_chart(build_tuning_figure(tuning_summary), use_container_width=True)
+            st.plotly_chart(
+                build_tuning_figure(tuning_summary),
+                use_container_width=True,
+                key="pipeline_tuning_figure",
+            )
             render_chart_frame_end()
         with table_column:
             render_subpanel_start()
@@ -1642,6 +1654,7 @@ def render_market_regime_analysis_page() -> None:
                 display_mode=display_mode,
             ),
             use_container_width=True,
+            key="regime_monitor_main_chart",
         )
         render_chart_frame_end()
         visible_regimes = (
@@ -1669,6 +1682,7 @@ def render_market_regime_analysis_page() -> None:
                 recent_periods=recent_periods if chart_view == "Recent Regimes" else 260,
             ),
             use_container_width=True,
+            key="regime_monitor_timeline",
         )
         render_chart_frame_end()
         render_subpanel_end()
@@ -1752,6 +1766,7 @@ def render_market_regime_analysis_page() -> None:
         st.plotly_chart(
             build_cluster_distribution_figure(semantic_dataframe, regime_labels=regime_state_map),
             use_container_width=True,
+            key="regime_monitor_cluster_distribution",
         )
         render_chart_frame_end()
         render_subpanel_end()
@@ -1766,6 +1781,7 @@ def render_market_regime_analysis_page() -> None:
         st.plotly_chart(
             build_regime_transition_figure(semantic_dataframe, regime_labels=regime_state_map),
             use_container_width=True,
+            key="regime_monitor_transition_matrix",
         )
         render_chart_frame_end()
         render_subpanel_end()
@@ -1782,6 +1798,7 @@ def render_market_regime_analysis_page() -> None:
         st.plotly_chart(
             build_current_regime_outlook_figure(semantic_dataframe, regime_labels=regime_state_map),
             use_container_width=True,
+            key="regime_monitor_current_outlook",
         )
         render_chart_frame_end()
         render_panel_end()
@@ -1829,6 +1846,7 @@ def render_market_regime_analysis_page() -> None:
                     regime_labels=regime_state_map,
                 ),
                 use_container_width=True,
+                key="regime_monitor_markov_forecast",
             )
             render_chart_frame_end()
             with st.expander("Open forecast probabilities", expanded=False):
@@ -1891,6 +1909,7 @@ def render_market_regime_analysis_page() -> None:
             st.plotly_chart(
                 build_regime_feature_profile_figure(semantic_dataframe, feature_profile_columns),
                 use_container_width=True,
+                key="regime_monitor_feature_profile",
             )
             render_chart_frame_end()
         else:
@@ -1971,6 +1990,7 @@ def render_market_regime_analysis_page() -> None:
                 st.plotly_chart(
                     build_confidence_history_figure(confidence_history.tail(220)),
                     use_container_width=True,
+                    key="regime_monitor_confidence_history",
                 )
                 render_chart_frame_end()
         else:
@@ -2105,6 +2125,7 @@ def render_correlation_matrix_page() -> None:
         st.plotly_chart(
             build_quant_correlation_figure(processed_dataframe, selected_columns),
             use_container_width=True,
+            key="correlation_matrix_heatmap",
         )
         render_chart_frame_end()
     else:
@@ -2181,6 +2202,7 @@ def render_volatility_analysis_page() -> None:
     st.plotly_chart(
         build_rolling_volatility_figure(processed_dataframe, selected_price, window, inferred_time),
         use_container_width=True,
+        key="volatility_monitor_chart",
     )
     render_chart_frame_end()
     render_panel_end()
@@ -2259,6 +2281,7 @@ def render_returns_analysis_page() -> None:
         st.plotly_chart(
             build_cumulative_returns_figure(returns_dataframe, returns_column, inferred_time),
             use_container_width=True,
+            key="returns_monitor_cumulative",
         )
         render_chart_frame_end()
         render_panel_end()
@@ -2272,6 +2295,7 @@ def render_returns_analysis_page() -> None:
         st.plotly_chart(
             build_returns_histogram(returns_dataframe, returns_column),
             use_container_width=True,
+            key="returns_monitor_histogram",
         )
         render_chart_frame_end()
         render_panel_end()
@@ -2399,7 +2423,11 @@ def render_trading_strategy_page() -> None:
         "Cumulative strategy return versus buy-and-hold benchmark under current regime exposure settings.",
     )
     render_chart_frame_start()
-    st.plotly_chart(build_strategy_comparison_figure(strategy_frame), use_container_width=True)
+    st.plotly_chart(
+        build_strategy_comparison_figure(strategy_frame),
+        use_container_width=True,
+        key="strategy_desk_comparison",
+    )
     render_chart_frame_end()
     render_panel_end()
 
@@ -2412,7 +2440,11 @@ def render_trading_strategy_page() -> None:
             "Regime-driven exposure path over time showing active risk-on and risk-off positioning.",
         )
         render_chart_frame_start()
-        st.plotly_chart(build_strategy_exposure_figure(strategy_frame), use_container_width=True)
+        st.plotly_chart(
+            build_strategy_exposure_figure(strategy_frame),
+            use_container_width=True,
+            key="strategy_desk_exposure",
+        )
         render_chart_frame_end()
         render_panel_end()
     with summary_col:
@@ -2434,7 +2466,11 @@ def render_trading_strategy_page() -> None:
             "Drawdown profile of the regime-aware strategy to highlight stress periods and recovery depth.",
         )
         render_chart_frame_start()
-        st.plotly_chart(build_drawdown_figure(strategy_frame), use_container_width=True)
+        st.plotly_chart(
+            build_drawdown_figure(strategy_frame),
+            use_container_width=True,
+            key="strategy_desk_drawdown",
+        )
         render_chart_frame_end()
         render_panel_end()
     with contribution_col:
@@ -2444,7 +2480,11 @@ def render_trading_strategy_page() -> None:
             "Cumulative contribution by semantic state, showing where the strategy earns or gives back performance.",
         )
         render_chart_frame_start()
-        st.plotly_chart(build_regime_return_contribution_figure(strategy_frame), use_container_width=True)
+        st.plotly_chart(
+            build_regime_return_contribution_figure(strategy_frame),
+            use_container_width=True,
+            key="strategy_desk_state_contribution",
+        )
         render_chart_frame_end()
         render_panel_end()
 
